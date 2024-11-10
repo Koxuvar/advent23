@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use crate::input;
 
 fn main() {
     let mut contents: Vec<String> = Vec::new();
