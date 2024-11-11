@@ -17,6 +17,12 @@ fn main() {
         .map(|g| g.id)
         .sum();
 
+    let power_total: u32 = games
+        .iter()
+        .map(|g| g.get_min_power_required())
+        .sum();
+
     println!("Possible Sum: {}", possible_sum);
+    println!("power: {}", power_total);
 }
 
