@@ -1,4 +1,4 @@
-use crate::input;
+use crate::advent23-2::input;
 
 fn main() {
     let mut contents: Vec<String> = Vec::new();
