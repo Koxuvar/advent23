@@ -1,3 +1,5 @@
+
+#[derive(Debug, PartialEq)]
 pub struct GameSet {
     green: u32,
     red: u32,
@@ -10,9 +12,10 @@ impl GameSet{
     }
 }
 
+#[derive(Debug, PartialEq)]
 pub struct Game {
     pub id: u32,
-    sets: vec<GameSet>,
+    sets: Vec<GameSet>,
 
 }
 
@@ -50,7 +53,7 @@ pub fn get_game_id(input: &str) -> u32 {
    for c in input.chars() {
        if c.is_numeric() {
            game_id_str.push(c);
-        } else if c == ":" {
+        } else if c == ':' {
             break;
         }
     }
@@ -58,4 +61,42 @@ pub fn get_game_id(input: &str) -> u32 {
    game_id_str.parse::<u32>().unwrap()
 }
 
+fn parse_game_set(input: &str) -> GameSet {
+    let mut green: u32 = 0;
+    let mut red: u32 = 0;
+    let mut blue: u32 = 0;
 
+    let cubes_split = input.split(',');
+
+    for cube in cubes_split {
+        let cube_split: Vec<&str> = cube.trim().split(' ').collect();
+        let num = cube_split[0].parse::<u32>().unwrap();
+        let color = cube_split[1];
+
+        match color {
+            "green" => green = num,
+            "red" => red = num,
+            "blue" => blue = num,
+            _ => panic!("Invalid color: {}", color),
+        }
+    }
+
+    GameSet { green, red, blue }
+
+}
+
+pub fn parse_game(input: &str) -> Game{
+    let game_id = get_game_id(input);
+
+    let mut input_split = input.split(':');
+
+    let sets_split = input_split.nth(1).unwrap().split(';');
+
+    let sets: Vec<GameSet> = sets_split.map(parse_game_set).collect();
+
+    Game {id: game_id, sets }
+}
+
+pub fn parse_games(input: &str) -> Vec<Game> {
+    input.lines().map(parse_game).collect()
+}
